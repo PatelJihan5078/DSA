@@ -3,27 +3,34 @@ public:
     int largestInteger(vector<int>& nums, int k) {
         int n = nums.size();
 
-        vector<int> count(51, 0);
+        vector<int> freq(51, 0);
 
-        for (int i = 0; i <= n - k; i++) {
+        for (int x : nums) {
+            freq[x]++;
+        }
+        if (k == n) {
+            return *max_element(nums.begin(), nums.end());
+        }
+        if (k == 1) {
+            int ans = -1;
 
-            set<int> s;
-
-            for (int j = i; j < i + k; j++) {
-                s.insert(nums[j]);
+            for (int x : nums) {
+                if (freq[x] == 1) {
+                    ans = max(ans, x);
+                }
             }
 
-            for (int x : s) {
-                count[x]++;
-            }
+            return ans;
         }
 
         int ans = -1;
 
-        for (int x = 0; x <= 50; x++) {
-            if (count[x] == 1) {
-                ans = x;
-            }
+        if (freq[nums[0]] == 1) {
+            ans = max(ans, nums[0]);
+        }
+
+        if (freq[nums[n - 1]] == 1) {
+            ans = max(ans, nums[n - 1]);
         }
 
         return ans;
